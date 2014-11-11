@@ -29,8 +29,7 @@
 </section>
 
 <!--<script src="libwebp-0.1.3.min.js"></script>-->
-<script src="http://html5-demos.appspot.com/static/getusermedia/whammy.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
 (function(exports) {
 
@@ -61,17 +60,9 @@ namespace = '/live'; // change to an empty string to use the global namespace
 // this is specially important when using the global namespace
 var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
-socket.on('connect', function() {
-    socket.emit('event', {data: 'I\'m Client: I\'m connected!'});
-});
-
-socket.on('response', function(msg) {
-    console.log(msg);
-});
-
-socket.on('connect', function() {
-    socket.emit('event', {data: 'I\'m Client: I\'m connecting to you, Server!'});
-});
+socket.on('connect', function () {
+    socket.emit('hi!');
+  });
 
 function $(selector) {
   return document.querySelector(selector) || null;
@@ -148,52 +139,6 @@ function stop() {
   toggleActivateRecordButton();
 
 };
-
-function embedVideoPreview(opt_url) {
-  var url = opt_url || null;
-  var video = $('#video-preview video') || null;
-  var downloadLink = $('#video-preview a[download]') || null;
-
-  if (!video) {
-    video = document.createElement('video');
-    video.autoplay = true;
-    video.controls = true;
-    video.loop = true;
-    //video.style.position = 'absolute';
-    //video.style.top = '70px';
-    //video.style.left = '10px';
-    video.style.width = canvas.width + 'px';
-    video.style.height = canvas.height + 'px';
-    $('#video-preview').appendChild(video);
-
-    downloadLink = document.createElement('a');
-    downloadLink.download = 'capture.webm';
-    downloadLink.textContent = '[ download video ]';
-    downloadLink.title = 'Download your .webm video';
-    var p = document.createElement('p');
-    p.appendChild(downloadLink);
-
-    $('#video-preview').appendChild(p);
-
-  } else {
-    window.URL.revokeObjectURL(video.src);
-  }
-
-  // https://github.com/antimatter15/whammy
-  // var encoder = new Whammy.Video(1000/60);
-  // frames.forEach(function(dataURL, i) {
-  //   encoder.add(dataURL);
-  // });
-  // var webmBlob = encoder.compile();
-
-  if (!url) {
-    var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-    url = window.URL.createObjectURL(webmBlob);
-  }
-
-  video.src = url;
-  downloadLink.href = url;
-}
 
 function initEvents() {
   $('#camera-me').addEventListener('click', turnOnCamera);
