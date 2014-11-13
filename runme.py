@@ -6,7 +6,7 @@ from flask.ext.socketio import emit
 
 def gen_livestream():
     """Video streaming generator function."""
-    return
+    return # Not yet implemented
     if not g.livestream:
         g.livestream = []
     while True:
@@ -16,29 +16,33 @@ def gen_livestream():
 
 
 @app.route("/")
-def hello():
+def home():
     return render_template('video_test.html')
 
 
 @socketio.on('connect', namespace='/live')
 def test_connect(namespace='/live'):
+    """Connect event."""
     print('Connecting')
     emit('response', {'data': 'I\'m Server: I\'m connected', 'count': 0})
 
 
 @socketio.on('disconnect', namespace='/live')
 def test_disconnect():
+    """Disconnect event."""
     print('Client disconnected')
 
 
 @socketio.on('event', namespace='/live')
 def test_message(message):
+    """Simple websocket echo."""
     emit('response',
          {'data': message['data']})
 
 
 @socketio.on('livevideo', namespace='/live')
 def test_live(message):
+    """Video streaming reader. It's supposed the stream will come from some javascript client side."""
     print(message['data']['width'], message['data']['height'])
     # g.livestream.append(message['data'])
 
