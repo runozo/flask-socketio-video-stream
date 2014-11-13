@@ -11,12 +11,12 @@ def gen_livestream():
         queue = cache.get('queue')
         if queue:
             frame = queue.pop()
-            cache.set('queue', queue, timeout=5 * 60)
-            print(frame)
+            cache.set('queue', queue)
         else:
             frame = ''
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+               #b'Content-Type: image/webp\r\n\r\n' + frame + b'\r\n')
 
 
 @app.route("/")
@@ -48,15 +48,14 @@ def test_message(message):
 @socketio.on('livevideo', namespace='/live')
 def test_live(message):
     """Video streaming reader. It's supposed that the stream will come from some javascript client side."""
-    #queue = cache.get('queue')
-    # if queue:
-    #    queue.insert(0, message['data'])
-    # else:
-    #    queue = [message['data']]
-    emit('response', '')
-    print(message['data'])
-
-    #cache.set('queue', queue, timeout=5 * 60)
+    queue = cache.get('queue')
+    if queue:
+        queue.insert(0, message['data'])
+    else:
+        queue = [message['data']]
+    # emit('response', '')
+    print(len(message['data']))
+    cache.set('queue', queue)
 
 
 @app.route('/video_feed')
