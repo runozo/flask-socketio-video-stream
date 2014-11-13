@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 from livestream import app, socketio
 from flask import render_template, g, Response
@@ -49,7 +50,7 @@ def test_live(message):
 
 @app.route('/video_feed')
 def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
+    """Video streaming route. Put this in the src attribute of a video tag."""
     return Response(gen_livestream(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
