@@ -7,7 +7,7 @@ from flask.ext.socketio import emit
 
 def gen_livestream():
     """Video streaming generator function."""
-    return # Not yet implemented
+    return  # Not yet implemented
     if not g.livestream:
         g.livestream = []
     while True:
@@ -43,8 +43,8 @@ def test_message(message):
 
 @socketio.on('livevideo', namespace='/live')
 def test_live(message):
-    """Video streaming reader. It's supposed the stream will come from some javascript client side."""
-    print(message['data']['width'], message['data']['height'])
+    """Video streaming reader. It's supposed that the stream will come from some javascript client side."""
+    print(message['data'])
     # g.livestream.append(message['data'])
 
 
