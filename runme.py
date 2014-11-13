@@ -47,7 +47,7 @@ def test_message(message):
 
 @socketio.on('livevideo', namespace='/live')
 def test_live(message):
-    """Video streaming reader. It's supposed that the stream will come from some javascript client side."""
+    """Video stream reader."""
     queue = cache.get('queue')
     if queue:
         queue.insert(0, message['data'])
