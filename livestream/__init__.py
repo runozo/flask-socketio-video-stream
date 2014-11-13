@@ -14,3 +14,5 @@ app = Flask(__name__)
 
 app.config.from_object(config)
 socketio = SocketIO(app)
+
+from views import *
