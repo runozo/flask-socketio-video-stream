@@ -21,7 +21,6 @@ var rafId = null;
 var setInt = null;
 var startTime = null;
 var endTime = null;
-var frames = [];
 
 namespace = '/live'; // no way
 
@@ -34,6 +33,7 @@ socket.on('connect', function () {
     console.log('connection event');
     socket.emit('event', { data: 'Client, Here' });
   });
+
 function $(selector) {
   return document.querySelector(selector) || null;
 }
@@ -68,16 +68,15 @@ function turnOnCamera(e) {
     blobURL = window.URL.createObjectURL(stream);
     video.src = blobURL;
     finishVideoSetup_();
-
   }, function(e) {
     alert('Fine, you get a movie instead of your beautiful face ;)');
-
     video.src = ''; // Nope, you get nothing
     finishVideoSetup_();
   });
 };
 
 function record() {
+  /* Go live */
   var elapsedTime = $('#elasped-time');
   var ctx = canvas.getContext('2d');
   var CANVAS_HEIGHT = canvas.height;
@@ -88,24 +87,23 @@ function record() {
   toggleActivateRecordButton();
   $('#stop-me').disabled = false;
 
-  setInt = setInterval(function(){sendVideoFrame_()}, 1000 / 20);
 
   function sendVideoFrame_() {
     // draw the video contents into the canvas x, y, width, height
     ctx.drawImage(video, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     // get the image data from the canvas object
     // and send them through websockets
-    socket.emit('livevideo', { data: canvas.toDataURL('image/jpeg', 1) });  // Send video frames to server
+    socket.emit('livevideo', { data: canvas.toDataURL('image/jpeg', 0.7) });  // Send video frame to server
     //console.log(canvas.toDataURL());
     document.title = 'Live streaming...' + Math.round((Date.now() - startTime) / 1000) + 's';
-    //rafId = requestAnimationFrame(sendVideoFrame_);
   };
 
-  //rafId = requestAnimationFrame(sendVideoFrame_);
+  setInt = setInterval(function(){sendVideoFrame_()}, 1000 / 20);
+
 };
 
 function stop() {
-  cancelAnimationFrame(rafId);
+  // cancelAnimationFrame(rafId);
   clearInterval(setInt);
   endTime = Date.now();
   $('#stop-me').disabled = true;

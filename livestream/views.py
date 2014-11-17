@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import print_function
 from livestream import app, socketio
 from flask import render_template, Response
@@ -9,6 +10,7 @@ def gen_livestream():
     """Video streaming generator function."""
 
     def _dog():
+        """Returns a dog frame."""
         fh = open("livestream/static/funny-dogs.jpg", "rb")
         frame = fh.read()
         fh.close()
@@ -26,13 +28,13 @@ def gen_livestream():
 
 @app.route("/")
 def home():
-    """The home page with webcam"""
+    """The home page with webcam."""
     return render_template('video_test.html')
 
 
 @app.route("/view")
 def view():
-    """The client page"""
+    """The client page."""
     return render_template('client.html')
 
 

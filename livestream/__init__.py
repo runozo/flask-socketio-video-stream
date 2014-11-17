@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from gevent import monkey
 # see: https://github.com/miguelgrinberg/Flask-SocketIO/issues/65
 monkey.patch_all()
@@ -12,8 +13,9 @@ from Queue import Queue
 # cache = MemcachedCache(['127.0.0.1:11211'])
 
 app = Flask(__name__)
-
 app.config.from_object(config)
-socketio = SocketIO(app)
 app.queue = Queue()
+
+socketio = SocketIO(app)
+
 from views import *
