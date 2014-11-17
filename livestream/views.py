@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from livestream import app, socketio, cache
-from flask import render_template, g, Response
+from livestream import app, socketio
+from flask import render_template, Response
 from flask.ext.socketio import emit
 
 
