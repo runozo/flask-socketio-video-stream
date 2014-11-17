@@ -15,15 +15,9 @@ def gen_livestream():
         return frame
 
     while True:
-        queue = cache.get('queue')
-        if queue:
-            # fh = open(str(len(queue)) + ".jpg", "wb")
-            frame = queue.pop().split('base64')[-1].decode('base64')
-
-            if not frame:
-                frame = _dog()
-            else:
-                cache.set('queue', queue)
+        frame = app.queue.get()
+        if frame:
+            frame = frame.split('base64')[-1].decode('base64')
         else:
             frame = _dog()
         yield (b'--frame\r\n'
@@ -75,6 +69,7 @@ def test_live(message):
     # emit('response', '')
     # print(len(message['data']))
     cache.set('queue', queue)
+    app.queue.put(message['data'])
 
 
 @app.route('/video_feed')
