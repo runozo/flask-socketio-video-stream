@@ -16,7 +16,7 @@ def gen_livestream():
 
     while True:
         if app.queue.qsize():
-            frame = app.queue.get().frame.split('base64')[-1].decode('base64')
+            frame = app.queue.get().split('base64')[-1].decode('base64')
         else:
             frame = _dog()
         yield (b'--frame\r\n'
