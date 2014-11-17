@@ -61,14 +61,6 @@ def test_message(message):
 @socketio.on('livevideo', namespace='/live')
 def test_live(message):
     """Video stream reader."""
-    queue = cache.get('queue')
-    if queue:
-        queue.insert(0, message['data'])
-    else:
-        queue = [message['data']]
-    # emit('response', '')
-    # print(len(message['data']))
-    cache.set('queue', queue)
     app.queue.put(message['data'])
 
 
