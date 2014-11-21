@@ -12,3 +12,5 @@ source env/bin/activate
 pip install -r requirements.txt
 gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker -b 0.0.0.0:4000 livestream:app
 ```
+
+Then, point to http://127.0.0.1:4000
